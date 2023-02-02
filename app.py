@@ -16,11 +16,11 @@ db = client.dbsparta
 
 @app.route('/')
 def main():
-   return render_template('index.html')
+   return render_template('main.html')
 
 @app.route('/order/<int:order_num>')
 def move_to_order(order_num):
-   return render_template('order_page.html', order_num=order_num)
+   return render_template('order.html', order_num=order_num)
 
 @app.route("/main", methods=["POST"])
 def web_main_post():
