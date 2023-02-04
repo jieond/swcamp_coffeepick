@@ -2,9 +2,115 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>커피 주문, CoffeePick으로 퀵하게 Pick!</title>
+
+    <style>
+        * {
+            font-family: 'Gowun Batang', serif;
+            color: white;
+        }
+
+        body {
+            background-color : black;
+            background-position: center;
+            background-size: cover;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
+
+        .order {
+            width: 500px;
+            margin: 60px auto 0px auto;
+            padding-bottom: 60px;
+        }
+
+        .mybtn {
+            width: 100%;
+        }
+
+        .order > table {
+            margin: 40px 0;
+            font-size: 18px;
+        }
+
+        option {
+            color: black;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            show_order();
+        });
+
+        function show_order() {
+            console.log({{ order_num }});
+
+            let temp_order_num = {{order_num}}
+
+
+            $.ajax({
+                type: 'GET',
+                url: '/order',
+                data: {},
+                success: function (response) {
+                    let rows = response['orders']
+                    let val = rows[temp_order_num=(temp_order_num-1)]
+                    console.log(val)
+
+                        let order_name = val['order_name']
+                        let due = val['due']
+                        let cafe_name = val['cafe_name']
+
+
+                        let temp_html = `<tr>
+                                            <td>${order_name}</td>
+                                            <td>${due}</td>
+                                            <td>${cafe_name}</td>
+                                          </tr>`
+
+                        $('#order-box').append(temp_html)
+
+                    // }
+                }
+            });
+        }
+
+    </script>
 </head>
 <body>
-
+<div class="mask"></div>
+<div class="order">
+    <h1>드디어 주문서에 도착!</h1>
+    <h3>특정 값만 넘어왔으면 좋겠는데요</h3>
+    <p>
+        데이터를 다른 페이지로 넘길 수 있다고?<br/>
+        앞으로 백년 간 오지 않을 기회. 커픽으로 즐기는 커피타임!
+    </p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">주문서명</th>
+            <th scope="col">주문마감시간</th>
+            <th scope="col">카페이름</th>
+        </tr>
+        </thead>
+        <tbody id="order-box">
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
