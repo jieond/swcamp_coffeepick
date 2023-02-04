@@ -1,10 +1,353 @@
+<!--order2.html_정서&선영-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>coffee를 퀵하게 pick, 커픽!</title>
+
+    <style>
+        * {
+            font-family: 'Gowun Batang', serif;
+            color: gray();
+        }
+
+        .body {
+            background-color: white;
+            background-position: center;
+            background-size: cover;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h3 {
+            font-weight: bold;
+        }
+
+        .btn {
+            width: 95%;
+            max-width: 140px;
+            margin: 20px auto 10px 340px;
+        }
+
+      .mytitle {
+            width: 95%;
+            max-width: 600px;
+            margin: 20px auto 20px auto;
+        }
+
+        .mytitle2 {
+            width: 95%;
+            max-width: 600px;
+            margin: 20px auto 20px auto;
+        }
+
+        .order {
+            width: 600px;
+            margin: 60px auto 0px auto;
+            padding-bottom: 0px;
+        }
+
+        .mybtn {
+            width: 100%;
+        }
+
+        .order > table {
+            margin : 40px 0;
+            font-size: 18px;
+        }
+
+        option {
+            color: black;
+        }
+
+        .mytitle {
+            width: 95%;
+            max-width: 600px;
+            margin: 20px auto 20px auto;
+        }
+
+        .mytitle2 {
+            width: 95%;
+            max-width: 600px;
+            margin: 20px auto 20px auto;
+        }
+
+        .order-box {
+            width: 95%;
+            max-width: 600px;
+            margin: 40px auto 20px auto;
+
+            box-shadow: 0px 0px 3px 0px gray;
+            padding: 40px;
+        }
+
+        .order-box > table {
+            margin: 60px 0 5px 0;
+            font-size: 28px;
+        }
+
+        option {
+            color: gray();
+        }
+
+    </style>
+    <script>
+        // let temp_url = window.location.href
+        // let user_order_num = Number(temp_url.split('/')[4])
+        let user_order_num = 2
+
+        // 정서
+        $(document).ready(function () {
+            show_main();
+        });
+
+        function show_main() {
+            $.ajax({
+                type: 'GET',
+                url: '/main',
+                data: {},
+                success: function (response) {
+                    console.log(response)
+                    let rows = response['orders']
+                    console.log(rows)
+                    for (let i = 0; i < rows.length; i++) {
+                        // user_order_num = rows[i]['order_num']
+                        let order_name = rows[i]['order_name']
+                        let due = rows[i]['due']
+                        let cafe_name = rows[i]['cafe_name']
+                        console.log(order_name, due, cafe_name)
+                        let temp_html = `<h2><td></td>주문서 이름: ${order_name}</h2>
+                                      <h1><td>마감시간: ${due}</td></h1>
+
+                                      <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>${cafe_name}</th><th><h5> 메뉴에서 pick! 해주세요 :)</h5></th>
+                                            </tr>
+                                            </thead>
+                                       </table>
+                                   </div>`
+
+                        if (rows[i]['order_num'] == user_order_num) {
+                           $('#main-box').append(temp_html)
+                        }
+                    }
+
+                }
+            });
+        }
+
+        let user_cafe_name = ''
+
+        // 선영
+        $(document).ready(function () {
+            show_main_cafe_name();
+        });
+
+        function show_main_cafe_name() {
+            $.ajax({
+                type: 'GET',
+                url: '/main',
+                data: {},
+                success: function (response) {
+                    // console.log(response)
+                    let rows = response['orders']
+                    // console.log(rows)
+                    for (let i = 0; i < rows.length; i++) {
+                        if (rows[i]["order_num"] == user_order_num) {
+                            // console.log(user_order_num)
+                            user_cafe_name = rows[i]["cafe_name"]
+                            // console.log(user_cafe_name)
+                        }
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            show_order();
+        });
+        function show_order() {
+            $.ajax({
+                type: 'GET',
+                url: '/order',
+                data: {},
+                success: function (response) {
+                    let rows = response['orders']
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['user_name']
+                        let menu = rows[i]['menu']
+                        let type = rows[i]['ondo_type']
+                        let size = rows[i]['size']
+
+                        let temp_html = `<tr>
+                                            <td>${name}</td>
+                                            <td>${menu}</td>
+                                            <td>${type}</td>
+                                            <td>${size}</td>
+                                          </tr>`
+                        $('#order-box').append(temp_html)
+                    }
+                }
+            });
+        }
+
+        function show_menus() {
+            $.ajax({
+                type: 'GET',
+                url: '/cafe_list',
+                data: {},
+                success: function (response) {
+                    console.log(response)
+                    // let tmp = "스타벅스"
+
+                    let rows = response['orders']
+                    for (let i = 0; i < rows.length; i++) {
+                        let cafe_name = rows[i]['cafe_name']
+                        if (cafe_name == user_cafe_name) {
+                            let menus = rows[i]['menus']
+                            console.log(menus)
+                            $('#menu').empty()
+                            for (let menu of menus) {
+                                let temp_html = `<option value="${menu}">${menu}</option>`
+                                $('#menu').append(temp_html)
+                        }
+                        }
+                    }
+
+                }
+            });
+        }
+
+        function save_order() {
+            $('#order-box').empty()
+            let name = $('#name').val()
+            let menu = $('#menu').val()
+            let type = $('#type').val()
+            let size = $('#size').val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/order',
+                data: {
+                    name_give: name,
+                    menu_give: menu,
+                    type_give: type,
+                    size_give: size
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+<!--정서-->
+<div class="btn">
+    <tbody id="order-link">
+    <span class="btn btn-outline-dark"><a onclick="clip(); return false;">링크복사</a></span>
+        </tbody>
+</div>
+<div class="mytitle">
+    <h3> 팀원 커피 주문,<br/>스트레스 없이 퀵하게 픽하자!</h3>
+</div>
+<div class="mytitle2">
+    <h1>coffick</h1>
+</div>
+
+<div class="order-box">
+    <h2><td></td>5G조</h2>
+    <h4><td>주문마감시간 10:30</td></h4>
+
+  <table class="table">
+        <thead>
+        <tr>
+            <th>스타벅스</th><th><h5>로 갈께요 :)</h5></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+</div>
+<!--    선영-->
+
+    <div class="order">
+<!--        <h1>coffick</h1>-->
+<!--        <h3>coffee 주문을 퀵하게 pick, 커픽!</h3>-->
+<!--        <p>-->
+<!--            한번 만든 주문서는 수정할 수 없어요!<br/>-->
+<!--            잘못 만들었다면 새로 만들어 팀원에게 공유해주세요 :)-->
+<!--        </p>-->
+        <div class="order-info">
+            <div class="input-group mb-3">
+                <span class="input-group-text">이름</span>
+                <input id="name" type="text" class="form-control">
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="menu">메뉴</label>
+                <select onclick="show_menus()" class="form-select" id="menu">
+                  <option selected>-- 골라보세요 --</option>
+<!--                  <option value="아메리카노">아메리카노</option>-->
+<!--                  <option value="딸기라떼">딸기라떼</option>-->
+<!--                  <option value="그린티">그린티</option>-->
+                </select>
+              </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="type">타입</label>
+                <select class="form-select" id="type">
+                  <option selected>-- ICE/HOT --</option>
+                  <option value="ICE">ICE</option>
+                  <option value="HOT">HOT</option>
+                </select>
+              </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="size">사이즈</label>
+                <select class="form-select" id="size">
+                  <option selected>-- S/M/L --</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                </select>
+              </div>
+              <button onclick="save_order()" type="button" class="btn btn-warning mybtn">주문하기</button>
+        </div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">이름</th>
+                <th scope="col">메뉴</th>
+                <th scope="col">타입</th>
+                <th scope="col">사이즈</th>
+              </tr>
+            </thead>
+            <tbody id="order-box">
+<!--              <tr>-->
+<!--                <td>홍길동</td>-->
+<!--                <td>서울시 용산구</td>-->
+<!--                <td>20평</td>-->
+<!--                <td>20평</td> -->
+<!--              </tr>-->
+            </tbody>
+          </table>
+    </div>
 </body>
 </html>
