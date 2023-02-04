@@ -18,9 +18,10 @@ db = client.dbsparta
 def main():
    return render_template('main.html')
 
-@app.route('/order/<int:order_num>')
+@app.route('/order/<order_num>')
 def move_to_order(order_num):
-   return render_template('order.html', order_num=order_num)
+    return render_template('order2.html', order_num=order_num)
+
 
 @app.route("/main", methods=["POST"])
 def web_main_post():
@@ -29,7 +30,7 @@ def web_main_post():
     cafe_name_receive = request.form['cafe_name_give']
 
     if order_name_receive == "" or due_receive == "" or cafe_name_receive == "-- 매장 선택 --" or cafe_name_receive == "준비중":
-        return jsonify({'msg': '모든 값을 입력해주세요','order_num':0})
+        return jsonify({'msg': '모든 값을 입력해주세요','order_num':"0"})
     else:
         order_num = db.orders.count_documents({})+1
 
@@ -44,9 +45,17 @@ def web_main_post():
 
         return jsonify({'msg': '주문서 생성 완료!','order_num':order_num})
 
+
 @app.route("/main", methods=["GET"])
 def web_main_get():
-    return jsonify({'msg': 'GET 연결 완료!'})
+    cafe_list = list(db.cafe_list.find({},{'_id':False}))
+    return jsonify({'cafe_list': cafe_list})
+
+
+@app.route("/order", methods=["GET"])
+def web_order_get():
+    order_list = list(db.orders.find({}, {'_id': False}))
+    return jsonify({'orders':order_list})
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
