@@ -104,7 +104,7 @@ def order_get():
     order_list = list(db.orders.find({},{'_id':False}))
     return jsonify({'orders':order_list})
 
-@app.route("/oder_count", methods=["POST"])
+@app.route("/order_count", methods=["POST"])
 def order_count_post():
     oder_list = db['order']
 
