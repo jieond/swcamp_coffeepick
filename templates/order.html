@@ -206,7 +206,7 @@
                         if (cafe_name == user_cafe_name) {
                             let menus = rows[i]['menus']
                             console.log(menus)
-                            // $('#menu').empty()
+                            $('#menu').empty()
                             for (let menu of menus) {
                                 let temp_html = `<option value="${menu}">${menu}</option>`
                                 $('#menu').append(temp_html)
