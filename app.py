@@ -99,5 +99,35 @@ def web_order_get():
     order_list = list(db.order.find({}, {'_id': False}))
     return jsonify({'orders': order_list})
 
+@app.route("/order", methods=["GET"])
+def order_get():
+    order_list = list(db.orders.find({},{'_id':False}))
+    return jsonify({'orders':order_list})
+
+@app.route("/oder_count", methods=["POST"])
+def order_count_post():
+    oder_list = db['order']
+
+    pipeline = [
+        {
+            "$group": {
+                "_id": {"menu": "$menu", "size": "$size", "ondo_type": "$ondo_type"},
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    aggregated_orders = list(order_list.aggregate(pipeline))
+
+    aggregated_order_counts = db["order_count"]
+    aggregated_order_counts.insert_many(aggregated_orders)
+
+    return "Aggregated orders successfully inserted"
+
+
+@app.route('/order_count', methods=['GET'])
+def get_order_count():
+    order_counts = list(aggregated_orders.find({},{'_id':False}))
+    return jsonify({'order_counts':order_counts})
+
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5004, debug=True)
