@@ -64,12 +64,21 @@
         $(document).ready(function () {
             show_main();
         });
-
+        // function show_main() {
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: '/main',
+        //         data: {},
+        //         success: function (response) {
+        //             alert(response['msg'])
+        //         }
+        //     });
+        // }
         function show_main() {
-
+            //$('#cafe_name').empty()
             $.ajax({
                 type: 'GET',
-                url: '/main',
+                url: '/main_cafe_list',
                 data: {},
                 success: function (response) {
                     let rows = response['cafe_list']
@@ -107,10 +116,11 @@
                 }
             });
         }
+
     </script>
 </head>
 <body>
-<div class="mask"></div>
+<!--<div class="mask"></div>-->
 <div class="mytitle">
     <h1>Coffee - Pick!</h1>
     <h3>커피 주문, 스트레스 없이 똑똑하게 Pick!</h3>
