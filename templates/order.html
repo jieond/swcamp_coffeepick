@@ -83,7 +83,7 @@
     <script>
         // let temp_url = window.location.href
         // let user_order_num = Number(temp_url.split('/')[4])
-        let user_order_num = 2
+        let user_order_num = {{order_num}}
 
         // 정서
         $(document).ready(function () {
@@ -91,9 +91,12 @@
         });
 
         function show_main() {
+
+            let user_order_num = {{order_num}}
+
             $.ajax({
                 type: 'GET',
-                url: '/main',
+                url: '/main_order',
                 data: {},
                 success: function (response) {
                     console.log(response)
@@ -134,9 +137,12 @@
         });
 
         function show_main_cafe_name() {
+
+            let user_order_num = {{order_num}}
+
             $.ajax({
                 type: 'GET',
-                url: '/main',
+                url: '/main_order',
                 data: {},
                 success: function (response) {
                     // console.log(response)
@@ -169,6 +175,7 @@
                         let type = rows[i]['ondo_type']
                         let size = rows[i]['size']
 
+                        if (rows[i]['order_num'] == user_order_num){
                         let temp_html = `<tr>
                                             <td>${name}</td>
                                             <td>${menu}</td>
@@ -176,15 +183,18 @@
                                             <td>${size}</td>
                                           </tr>`
                         $('#order-box').append(temp_html)
+                        }
+
                     }
                 }
             });
         }
 
         function show_menus() {
+
             $.ajax({
                 type: 'GET',
-                url: '/cafe_list',
+                url: '/order_cafe_list',
                 data: {},
                 success: function (response) {
                     console.log(response)
@@ -196,7 +206,7 @@
                         if (cafe_name == user_cafe_name) {
                             let menus = rows[i]['menus']
                             console.log(menus)
-                            $('#menu').empty()
+                            // $('#menu').empty()
                             for (let menu of menus) {
                                 let temp_html = `<option value="${menu}">${menu}</option>`
                                 $('#menu').append(temp_html)
@@ -219,6 +229,7 @@
                 type: 'POST',
                 url: '/order',
                 data: {
+                    num_give : user_order_num,
                     name_give: name,
                     menu_give: menu,
                     type_give: type,
@@ -230,15 +241,28 @@
                 }
             });
         }
+
+        function clip() {
+
+            var url = '';
+            var textarea = document.createElement("textarea");
+            document.body.appendChild(textarea);
+            url = window.document.location.href;
+            textarea.value = url;
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+            alert("URL이 복사되었습니다.")
+        }
     </script>
 </head>
 <body>
 <!--정서-->
-<!--    <div class="btn">-->
-<!--        <tbody id="order-link">-->
-<!--        <span class="btn btn-outline-dark"><a onclick="clip(); return false;">링크복사</a></span>-->
-<!--        </tbody>-->
-<!--    </div>-->
+    <div class="btn">
+        <tbody id="order-link">
+        <span class="btn btn-outline-info"><a onclick="clip(); return false;">링크복사</a></span>
+        </tbody>
+    </div>
     <div class="mytitle">
         <h2> 커피 주문,<br/>스트레스 없이 퀵(Quick)하게 픽(Pick)하자!</h2>
     </div>
