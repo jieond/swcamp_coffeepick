@@ -23,28 +23,36 @@
 
         .mytitle {
             width: 100%;
-            height: 250px;
+            height: 350px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.tastingtable.com/img/gallery/coffee-brands-ranked-from-worst-to-best/l-intro-1645231221.jpg');
-            background-position: center 30%;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1559496417-e7f25cb247f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80');
+            background-position: right;
             background-size: cover;
 
             color: white;
 
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: cover;
             justify-content: center;
         }
 
         h1 {
             font-weight: bold;
+            margin: 50px auto 0px auto;
+        }
+
+        .titletext {
+            width: 95%;
+            max-width: 600px;
+            margin: 40px auto 0px auto;
         }
 
         .order {
-            width: 500px;
-            margin: 60px auto 0px auto;
-            padding-bottom: 60px;
+            width: 95%;
+            max-width: 500px;
+            margin: 20px auto 20px auto;
+            padding-bottom: 20px;
         }
 
         .mybtn {
@@ -122,12 +130,14 @@
 <body>
 <!--<div class="mask"></div>-->
 <div class="mytitle">
+    <div class="titletext">
     <h1>Coffee - Pick!</h1>
     <h3>커피 주문, 스트레스 없이 똑똑하게 Pick!</h3>
     <p>
         한번 만든 주문서는 수정할 수 없어요!<br/>
         잘못 만들었다면 새로 만들어 팀원에게 공유 해주세요 :)
     </p>
+</div>
 </div>
 <div class="order">
     <div class="order-info">
