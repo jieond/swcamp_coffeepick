@@ -85,7 +85,7 @@
 
         }
 
-        .mypost {
+        .floating-box {
             width: 95%;
             max-width: 600px;
             margin: 20px auto 0px auto;
@@ -125,7 +125,6 @@
                         console.log(order_name, due, cafe_name)
                         let temp_html = `<h2><td></td>주문서 이름: ${order_name}</h2>
                                       <h1><td>마감시간: ${due}</td></h1>
-
                                       <table class="table">
                                             <thead>
                                             <tr>
@@ -174,6 +173,41 @@
             });
         }
 
+
+<!--    경록_취합 주문 가져오기 -->
+        $(document).ready(function () {
+            show_order_count();
+        });
+
+        function show_order_count() {
+            $.ajax({
+                type: 'GET',
+                url: '/order_count',
+                data: {},
+                success: function (response) {
+                    let rows_order_count = response['order_count']
+                    let total_order_count = 0;
+                    for (let i = 0; i < rows_order_count.length; i++) {
+                        let id_order_count = rows_order_count[i]['id']
+                        let no_order_count = rows_order_count[i]['count']
+                        total_order_count += no_order_count;
+
+                        let temp_html_order_count = `<div id="order_count_box" class="floating-box"
+                                                        style="width: 500px; background-color: darkgrey;">
+                                                        <p> 총 ${total_order_count} 잔</p>
+                                                        <p> ${id_order_count} ${no_order_count} 잔</p>
+                                                     </div>`
+                        $('#order_count_box').append(temp_html_order_count)
+                    }
+                }
+            })
+        }
+
+
+
+
+<!--    경록_취합 주문 보여주기 -->
+
         $(document).ready(function () {
             show_order();
         });
@@ -191,19 +225,48 @@
                         let size = rows[i]['size']
 
                         if (rows[i]['order_num'] == user_order_num){
-                        let temp_html = `<tr>
-                                            <td>${name}</td>
-                                            <td>${menu}</td>
-                                            <td>${type}</td>
-                                            <td>${size}</td>
-                                          </tr>`
-                        $('#order-box').append(temp_html)
+                        let temp_html2 = `<div class="col">
+                                            <div class="card h-77">
+                                                <div class="card-header" style="background-color: darkgrey;">
+                                                </div>
+                                                <div class="card-body" style="background-color: darkgrey;">
+                                                    <h5 class="card-title">${name}
+                                                        <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
+                                                    </h5>
+                                                    <p class="card-text">${menu}</p>
+                                                    <p>${size}</p>
+                                                    <p>${type}</p>
+                                                </div>
+                                            </div>`
+
+                        $('#order_box').append(temp_html2)
                         }
 
                     }
                 }
             });
         }
+
+<!--    경록_주문 삭제 기능 -->
+        $(document).ready(function () {
+            $("#order-delete-btn").on("click", function () {
+                if (confirm("해당 주문을 삭제하시겠습니까?")) {
+                    $.ajax({
+                        url: "/delete-item",
+                        type: "DELETE",
+                        success: function (result) {
+                            alert("해당 주문이 삭제되었습니다");
+                        },
+                        error: function (xhr, status, error) {
+                            alert("오류가 발생하였습니다");
+                        }
+                    });
+                }
+            });
+        });
+
+
+
 
         function show_menus() {
 
@@ -272,6 +335,8 @@
 
 
 
+
+
     </script>
 </head>
 <body>
@@ -335,23 +400,24 @@
         </div>
 
 <!--    경록 주문 집계-->
-    <div class="mypost" id="ordercount_box">
-        <div class="card" style="width: 450px;">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">총 5잔</li>
-                <li class="list-group-item">아메리카노 ICE 3잔</li>
-                <li class="list-group-item">바닐라라떼 HOT 2잔</li>
-            </ul>
+
+        <div id="order_count_box" class="floating-box"
+             style="width: 500px; background-color: darkgrey;">
+            <p> 총 ${total_order_count} 잔</p>
+            <p> ${id_order_count} ${no_order_count} 잔</p>
         </div>
-    </div>
 
 <!--    경록 주문 정보-->
     <div class="mycards" , id="order_box">
         <div class="row row-cols-1 row-cols-md-2 g-2">
             <div class="col">
                 <div class="card h-77">
+                    <div class="card-header" style="background-color: darkgrey;">
+                    </div>
                     <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}</h5>
+                        <h5 class="card-title">${name}
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                        </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
                         <p>${type}</p>
@@ -360,8 +426,12 @@
             </div>
             <div class="col">
                 <div class="card h-77">
+                    <div class="card-header" style="background-color: darkgrey;">
+                    </div>
                     <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}</h5>
+                        <h5 class="card-title">${name}
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                        </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
                         <p>${type}</p>
@@ -370,8 +440,12 @@
             </div>
             <div class="col">
                 <div class="card h-77">
+                    <div class="card-header" style="background-color: darkgrey;">
+                    </div>
                     <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}</h5>
+                        <h5 class="card-title">${name}
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                        </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
                         <p>${type}</p>
@@ -380,8 +454,12 @@
             </div>
             <div class="col">
                 <div class="card h-77">
+                    <div class="card-header" style="background-color: darkgrey;">
+                    </div>
                     <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${user_name}</h5>
+                        <h5 class="card-title">${name}
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                        </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
                         <p>${type}</p>
@@ -390,8 +468,12 @@
             </div>
             <div class="col">
                 <div class="card h-77">
+                    <div class="card-header" style="background-color: darkgrey;">
+                    </div>
                     <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${user_name}</h5>
+                        <h5 class="card-title">${name}
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                        </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
                         <p>${type}</p>
