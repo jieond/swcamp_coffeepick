@@ -99,7 +99,10 @@ def web_order_get():
     order_list = list(db.order.find({}, {'_id': False}))
     return jsonify({'orders': order_list})
 
-<!--    경록 주문 집계 POST -->
+@app.route("/order", methods=["GET"])
+def order_get():
+    order_list = list(db.orders.find({},{'_id':False}))
+    return jsonify({'orders':order_list})
 
 @app.route("/order_count", methods=["POST"])
 def order_count_post():
@@ -120,11 +123,10 @@ def order_count_post():
 
     return "Aggregated orders successfully inserted"
 
-<!--    경록 주문 집계 GET -->
 
 @app.route('/order_count', methods=['GET'])
 def get_order_count():
-    order_counts = list(aggregated_orders_counts.find({},{'_id':False}))
+    order_counts = list(aggregated_orders.find({},{'_id':False}))
     return jsonify({'order_counts':order_counts})
 
 if __name__ == '__main__':
