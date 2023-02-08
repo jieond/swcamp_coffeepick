@@ -99,11 +99,11 @@ def web_order_get():
     order_list = list(db.order.find({}, {'_id': False}))
     return jsonify({'orders': order_list})
 
-<!--    경록 주문 집계 POST -->
+### 경록 주문 집계 POST ###
 
 @app.route("/order_count", methods=["POST"])
 def order_count_post():
-    oder_list = db['order']
+    order_list = db['order']
 
     pipeline = [
         {
@@ -120,11 +120,11 @@ def order_count_post():
 
     return "Aggregated orders successfully inserted"
 
-<!--    경록 주문 집계 GET -->
+#### 경록 주문 집계 GET ####
 
 @app.route('/order_count', methods=['GET'])
 def get_order_count():
-    order_counts = list(aggregated_orders_counts.find({},{'_id':False}))
+    order_counts = list(db['order_count'].find({},{'_id':False}))
     return jsonify({'order_counts':order_counts})
 
 if __name__ == '__main__':

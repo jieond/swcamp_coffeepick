@@ -174,9 +174,13 @@
         }
 
 
-<!--    경록_취합 주문 가져오기 -->
+<!--    경록_주문 집계 결과 가져오기 -->
         $(document).ready(function () {
             show_order_count();
+
+            window.addEventListener('beforeunload', function (e) {
+                show_order_count();
+            });
         });
 
         function show_order_count() {
@@ -185,23 +189,22 @@
                 url: '/order_count',
                 data: {},
                 success: function (response) {
-                    let rows_order_count = response['order_count']
+                    let rows_order_count = response['order_count'];
                     let total_order_count = 0;
                     for (let i = 0; i < rows_order_count.length; i++) {
-                        let id_order_count = rows_order_count[i]['id']
-                        let no_order_count = rows_order_count[i]['count']
+                        let id_order_count = rows_order_count[i]['id'];
+                        let no_order_count = rows_order_count[i]['count'];
                         total_order_count += no_order_count;
-
-                        let temp_html_order_count = `<div id="order_count_box" class="floating-box"
-                                                        style="width: 500px; background-color: darkgrey;">
-                                                        <p> 총 ${total_order_count} 잔</p>
-                                                        <p> ${id_order_count} ${no_order_count} 잔</p>
-                                                     </div>`
-                        $('#order_count_box').append(temp_html_order_count)
                     }
+
+                    let temp_html_order_count = `<p> 총 ${total_order_count} 잔</p>
+                                         <p> ${id_order_count} ${no_order_count} 잔</p>`
+                    ;
+                    $('#order_count_box').html(temp_html_order_count);
                 }
-            })
+            });
         }
+
 
 
 
@@ -218,6 +221,7 @@
                 data: {},
                 success: function (response) {
                     let rows = response['orders']
+                    $('#order_box').empty();
                     for (let i = 0; i < rows.length; i++) {
                         let name = rows[i]['user_name']
                         let menu = rows[i]['menu']
@@ -416,7 +420,7 @@
                     </div>
                     <div class="card-body" style="background-color: darkgrey;">
                         <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
                         </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
@@ -430,7 +434,7 @@
                     </div>
                     <div class="card-body" style="background-color: darkgrey;">
                         <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
                         </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
@@ -444,7 +448,7 @@
                     </div>
                     <div class="card-body" style="background-color: darkgrey;">
                         <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
                         </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
@@ -458,7 +462,7 @@
                     </div>
                     <div class="card-body" style="background-color: darkgrey;">
                         <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
                         </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
@@ -472,7 +476,7 @@
                     </div>
                     <div class="card-body" style="background-color: darkgrey;">
                         <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
                         </h5>
                         <p class="card-text">${menu}</p>
                         <p>${size}</p>
