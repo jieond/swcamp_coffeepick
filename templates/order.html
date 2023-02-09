@@ -21,27 +21,39 @@
     <style>
         * {
             font-family: 'Gowun Batang', serif;
-            color: white;
+            color: gray();
         }
 
-        body {
+/*        body {
             background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.aitimes.com/news/photo/202010/132592_129694_3139.jpg');
             background-position: center;
             background-size: cover;
-        }
+        }*/
 
-        h1 {
+         h3 {
             font-weight: bold;
         }
 
+/*        h1 {
+            font-weight: bold;
+        }*/
+
         .order {
-            width: 500px;
+            width: 600px;
             margin: 60px auto 0px auto;
             padding-bottom: 60px;
         }
 
+        .btn {
+            width: 100%;
+            max-width: 175px;
+            margin: 5px auto 5px 315px;
+        }
+
         .mybtn {
             width: 100%;
+            max-width: 140px;
+            margin: 20px auto 10px 460px;
         }
 
         .order > table {
@@ -49,11 +61,11 @@
             font-size: 18px;
         }
 
-        option {
+/*        option {
             color: black;
-        }
+        }*/
 
-                .mytitle {
+        .mytitle {
             width: 95%;
             max-width: 600px;
             margin: 20px auto 20px auto;
@@ -62,13 +74,13 @@
         .mytitle2 {
             width: 95%;
             max-width: 600px;
-            margin: 20px auto 20px auto;
+            margin: 40px auto 20px auto;
         }
 
         .main-box {
             width: 95%;
             max-width: 600px;
-            margin: 20px auto 20px auto;
+            margin: auto auto 20px auto;
 
             box-shadow: 0px 0px 3px 0px gray;
             padding: 40px;
@@ -77,6 +89,10 @@
         .main-box > table {
             margin: 60px 0 5px 0;
             font-size: 28px;
+        }
+
+        option {
+            color: gray();
         }
 
     </style>
@@ -108,13 +124,13 @@
                         let due = rows[i]['due']
                         let cafe_name = rows[i]['cafe_name']
                         console.log(order_name, due, cafe_name)
-                        let temp_html = `<h2><td></td>주문서 이름: ${order_name}</h2>
+                        let temp_html = `<h2><td>주문서 이름: ${order_name}</td></h2>
                                       <h1><td>마감시간: ${due}</td></h1>
 
                                       <table class="table">
                                             <thead>
                                             <tr>
-                                                <th>${cafe_name}</th><th><h5> 메뉴에서 pick! 해주세요 :)</h5></th>
+                                                <th>${cafe_name}</th><th><h5> 메뉴를 pick! 해주세요 :)</h5></th>
                                             </tr>
                                             </thead>
                                        </table>
@@ -258,19 +274,32 @@
 </head>
 <body>
 <!--정서-->
-    <div class="btn">
-        <tbody id="order-link">
-        <span class="btn btn-outline-info"><a onclick="clip(); return false;">링크복사</a></span>
-        </tbody>
-    </div>
-    <div class="mytitle">
-        <h2> 커피 주문,<br/>스트레스 없이 퀵(Quick)하게 픽(Pick)하자!</h2>
-    </div>
+
+<!--    <div class="mytitle">
+        <h3> 팀원 커피 주문,<br/>스트레스 없이 퀵(Quick)하게 픽(Pick)하자!</h3>
+    </div>-->
     <div class="mytitle2">
         <h1>coffick</h1>
     </div>
 
+<div class="btn">
+        <tbody id="order-link">
+        <button onclick="clip(); return false;" type="button" class="btn btn btn-outline-dark">주문서 링크복사</button>
+        </tbody>
+    </div>
+
     <div id="main-box" class="main-box">
+<!--        <h2><td>주문서 이름: 5G조</td></h2>
+        <h1><td>마감시간: 10시30분</td></h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>카페이름</th><th><h5> 메뉴를 pick! 해주세요 :)</h5></th>
+            </tr>
+            </thead>
+        </table>-->
+    </div>
     </div>
 
 <!--    선영-->
@@ -313,7 +342,7 @@
                   <option value="L">L</option>
                 </select>
               </div>
-              <button onclick="save_order()" type="button" class="btn btn-warning mybtn">주문하기</button>
+              <button onclick="save_order()" type="button" class="mybtn btn btn-success btn-lg">주문하기</button>
         </div>
         <table class="table">
             <thead>
