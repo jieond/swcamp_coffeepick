@@ -21,27 +21,35 @@
     <style>
         * {
             font-family: 'Gowun Batang', serif;
-            color: white;
+            color: gray();
         }
 
-        body {
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.aitimes.com/news/photo/202010/132592_129694_3139.jpg');
-            background-position: center;
-            background-size: cover;
-        }
+        /*body {*/
+        /*    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.aitimes.com/news/photo/202010/132592_129694_3139.jpg');*/
+        /*    background-position: center;*/
+        /*    background-size: cover;*/
+        /*}*/
 
-        h1 {
+        h3 {
             font-weight: bold;
         }
 
         .order {
-            width: 500px;
+            width: 600px;
             margin: 60px auto 0px auto;
             padding-bottom: 60px;
         }
 
+        .btn {
+            width: 100%;
+            max-width: 175px;
+            margin: 5px auto 5px 315px;
+        }
+
         .mybtn {
             width: 100%;
+            max-width: 140px;
+            margin: 20px auto 10px 460px;
         }
 
         .order > table {
@@ -49,29 +57,35 @@
             font-size: 18px;
         }
 
-        option {
-            color: black;
-        }
+        /*option {*/
+        /*    color: black;*/
+        /*}*/
 
-                .mytitle {
+        .mytitle {
             width: 95%;
             max-width: 600px;
             margin: 20px auto 20px auto;
         }
 
         .mytitle2 {
+            display: flex;
+            justify-content: space-around;
             width: 95%;
             max-width: 600px;
-            margin: 20px auto 20px auto;
+            margin: 40px auto 20px auto;
         }
 
         .main-box {
             width: 95%;
             max-width: 600px;
-            margin: 20px auto 20px auto;
+            margin: auto auto 20px auto;
 
             box-shadow: 0px 0px 3px 0px gray;
             padding: 40px;
+        }
+
+        option {
+            color: gray();
         }
 
         .main-box > table {
@@ -85,7 +99,7 @@
 
         }
 
-        .floating-box {
+        .mypost {
             width: 95%;
             max-width: 600px;
             margin: 20px auto 0px auto;
@@ -107,8 +121,6 @@
 
         function show_main() {
 
-            let user_order_num = {{order_num}}
-
             $.ajax({
                 type: 'GET',
                 url: '/main_order',
@@ -123,16 +135,17 @@
                         let due = rows[i]['due']
                         let cafe_name = rows[i]['cafe_name']
                         console.log(order_name, due, cafe_name)
-                        let temp_html = `<h2><td></td>주문서 이름: ${order_name}</h2>
-                                      <h1><td>마감시간: ${due}</td></h1>
-                                      <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>${cafe_name}</th><th><h5> 메뉴에서 pick! 해주세요 :)</h5></th>
-                                            </tr>
-                                            </thead>
-                                       </table>
-                                   </div>`
+                        let temp_html = `<h2><td>주문서 이름: ${order_name}</td></h2>
+                                          <h1><td>마감시간: ${due}</td></h1>
+
+                                          <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>${cafe_name}</th><th><h5> 메뉴를 pick! 해주세요 :)</h5></th>
+                                                </tr>
+                                                </thead>
+                                           </table>
+                                       </div>`
 
                         if (rows[i]['order_num'] == user_order_num) {
                            $('#main-box').append(temp_html)
@@ -152,8 +165,6 @@
 
         function show_main_cafe_name() {
 
-            let user_order_num = {{order_num}}
-
             $.ajax({
                 type: 'GET',
                 url: '/main_order',
@@ -172,105 +183,6 @@
                 }
             });
         }
-
-
-<!--    경록_주문 집계 결과 가져오기 -->
-        $(document).ready(function () {
-            show_order_count();
-
-            window.addEventListener('beforeunload', function (e) {
-                show_order_count();
-            });
-        });
-
-        function show_order_count() {
-            $.ajax({
-                type: 'GET',
-                url: '/order_count',
-                data: {},
-                success: function (response) {
-                    let rows_order_count = response['order_count'];
-                    let total_order_count = 0;
-                    for (let i = 0; i < rows_order_count.length; i++) {
-                        let id_order_count = rows_order_count[i]['id'];
-                        let no_order_count = rows_order_count[i]['count'];
-                        total_order_count += no_order_count;
-                    }
-
-                    let temp_html_order_count = `<p> 총 ${total_order_count} 잔</p>
-                                         <p> ${id_order_count} ${no_order_count} 잔</p>`
-                    ;
-                    $('#order_count_box').html(temp_html_order_count);
-                }
-            });
-        }
-
-
-
-
-
-<!--    경록_취합 주문 보여주기 -->
-
-        $(document).ready(function () {
-            show_order();
-        });
-        function show_order() {
-            $.ajax({
-                type: 'GET',
-                url: '/order',
-                data: {},
-                success: function (response) {
-                    let rows = response['orders']
-                    $('#order_box').empty();
-                    for (let i = 0; i < rows.length; i++) {
-                        let name = rows[i]['user_name']
-                        let menu = rows[i]['menu']
-                        let type = rows[i]['ondo_type']
-                        let size = rows[i]['size']
-
-                        if (rows[i]['order_num'] == user_order_num){
-                        let temp_html2 = `<div class="col">
-                                            <div class="card h-77">
-                                                <div class="card-header" style="background-color: darkgrey;">
-                                                </div>
-                                                <div class="card-body" style="background-color: darkgrey;">
-                                                    <h5 class="card-title">${name}
-                                                        <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
-                                                    </h5>
-                                                    <p class="card-text">${menu}</p>
-                                                    <p>${size}</p>
-                                                    <p>${type}</p>
-                                                </div>
-                                            </div>`
-
-                        $('#order_box').append(temp_html2)
-                        }
-
-                    }
-                }
-            });
-        }
-
-<!--    경록_주문 삭제 기능 -->
-        $(document).ready(function () {
-            $("#order-delete-btn").on("click", function () {
-                if (confirm("해당 주문을 삭제하시겠습니까?")) {
-                    $.ajax({
-                        url: "/delete-item",
-                        type: "DELETE",
-                        success: function (result) {
-                            alert("해당 주문이 삭제되었습니다");
-                        },
-                        error: function (xhr, status, error) {
-                            alert("오류가 발생하였습니다");
-                        }
-                    });
-                }
-            });
-        });
-
-
-
 
         function show_menus() {
 
@@ -337,25 +249,137 @@
             alert("URL이 복사되었습니다.")
         }
 
+        <!--    경록_주문 집계 결과 가져오기 -->
+        $(document).ready(function () {
+            show_order_count();
+        });
 
+        function show_order_count() {
+            $.ajax({
+                type: 'GET',
+                url: '/order_count',
+                data: {},
+                success: function (response) {
+                    let rows = response['order_counts']
+                    //$('#total_count_box').empty();
+                    //$('#order_count_box').empty();
+
+                    let total_no_order_count = 0;
+                    for (let i = 0; i < rows.length; i++) {
+
+                        if (rows[i]['order_num'] == user_order_num) {
+
+                            let ordercount_menu = rows[i]['menu']
+                            let ordercount_size = rows[i]['size']
+                            let ordercount_ondotype = rows[i]['ondo_type']
+                            let ordercount_count = rows[i]['count']
+
+                            total_no_order_count += ordercount_count;
+
+                            let temp_html_total_no_count = `<div id="total_count_box" class="floating-box"
+                                                             style="width: 500px; background-color: darkgrey; margin-outside: 20px">
+                                                             <p> 총 ${total_no_order_count} 잔 </p>
+                                                             </div>`
+
+                            $('#total_count_box').html(temp_html_total_no_count)
+
+                            let temp_html_order_count = `<div id="order_count_box" class="floating-box"
+                                                         style="width: 500px; background-color: darkgrey; margin-outside: 20px">
+                                                         ${ordercount_menu} ${ordercount_ondotype} ${ordercount_size} ${ordercount_count} 잔
+                                                         </div>`
+
+                            $('#order_count_box').append(temp_html_order_count);
+                        }
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+
+        <!--    경록_취합 주문 보여주기 -->
+
+        $(document).ready(function () {
+            show_order();
+        });
+
+        function show_order() {
+            $.ajax({
+                type: 'GET',
+                url: '/order',
+                data: {},
+                success: function (response) {
+                    let rows = response['orders']
+                    $('#order_box').empty();
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['user_name']
+                        let menu = rows[i]['menu']
+                        let type = rows[i]['ondo_type']
+                        let size = rows[i]['size']
+
+                        if (rows[i]['order_num'] == user_order_num) {
+                            let temp_html2 = `<div class="col">
+                                            <div class="card h-77">
+                                                <div class="card-header" style="background-color: darkgrey;">
+                                                </div>
+                                                <div class="card-body" style="background-color: darkgrey;">
+                                                    <h5 class="card-title">${name}
+                                                        <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="deleteItem()"> X </button>
+                                                    </h5>
+                                                    <p class="card-text">${menu}</p>
+                                                    <p>${size}</p>
+                                                    <p>${type}</p>
+                                                </div>
+                                            </div>`
+
+                            $('#order_box').append(temp_html2)
+                        }
+                    }
+                }
+            });
+        }
+
+        <!--    경록_주문 삭제 기능 -->
+        function deleteItem() {
+            if (confirm("주문을 삭제하시겠습니까?")) {
+                $.ajax({
+                    url: "/delete-item",
+                    type: "DELETE",
+                    data: {
+                        "user_name": name,
+                        "size": size,
+                        "ondo_type": ondo_type,
+                        "menu": menu
+                    },
+                    success: function (result) {
+                        alert("주문이 삭제되었습니다!");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("에러가 발생했습니다!");
+                    }
+                });
+            }
+        }
 
 
 
     </script>
 </head>
 <body>
-<!--정서-->
-    <div class="btn">
-        <tbody id="order-link">
-        <span class="btn btn-outline-info"><a onclick="clip(); return false;">링크복사</a></span>
-        </tbody>
-    </div>
-    <div class="mytitle">
-        <h2> 커피 주문,<br/>스트레스 없이 퀵(Quick)하게 픽(Pick)하자!</h2>
-    </div>
+<!--    <div class="mytitle">-->
+<!--        <h2> 커피 주문,<br/>스트레스 없이 퀵(Quick)하게 픽(Pick)하자!</h2>-->
+<!--    </div>-->
     <div class="mytitle2">
         <h1>coffick</h1>
+            <tbody id="order-link">
+            <button onclick="clip(); return false;" type="button" class="btn btn btn-dark" >주문서 링크복사</button>
+            </tbody>
     </div>
+
 
     <div id="main-box" class="main-box">
     </div>
@@ -363,12 +387,6 @@
 <!--    선영-->
     <div class="mask"></div>
     <div class="order">
-<!--        <h1>coffick</h1>-->
-<!--        <h3>coffee 주문을 퀵하게 pick, 커픽!</h3>-->
-<!--        <p>-->
-<!--            한번 만든 주문서는 수정할 수 없어요!<br/>-->
-<!--            잘못 만들었다면 새로 만들어 팀원에게 공유해주세요 :)-->
-<!--        </p>-->
         <div class="order-info">
             <div class="input-group mb-3">
                 <span class="input-group-text">이름</span>
@@ -378,9 +396,7 @@
                 <label class="input-group-text" for="menu">메뉴</label>
                 <select onclick="show_menus()" class="form-select" id="menu">
                   <option selected>-- 골라보세요 --</option>
-<!--                  <option value="아메리카노">아메리카노</option>-->
-<!--                  <option value="딸기라떼">딸기라떼</option>-->
-<!--                  <option value="그린티">그린티</option>-->
+
                 </select>
               </div>
             <div class="input-group mb-3">
@@ -400,91 +416,20 @@
                   <option value="L">L</option>
                 </select>
               </div>
-              <button onclick="save_order()" type="button" class="btn btn-warning mybtn">주문하기</button>
+              <button onclick="save_order()" type="button" class="mybtn btn btn-success btn-lg">주문하기</button>
         </div>
 
-<!--    경록 주문 집계-->
+        <!--    경록 주문 집계 -->
+        <div id="total_count_box" class="floating-box"
+             style="width: 500px; background-color: darkgrey; margin-outside: 20px">
+        </div>
 
         <div id="order_count_box" class="floating-box"
-             style="width: 500px; background-color: darkgrey;">
-            <p> 총 ${total_order_count} 잔</p>
-            <p> ${id_order_count} ${no_order_count} 잔</p>
+                 style="width: 500px; background-color: darkgrey; margin-outside: 20px">
         </div>
 
-<!--    경록 주문 정보-->
+        <!--    경록 주문 정보-->
     <div class="mycards" , id="order_box">
-        <div class="row row-cols-1 row-cols-md-2 g-2">
-            <div class="col">
-                <div class="card h-77">
-                    <div class="card-header" style="background-color: darkgrey;">
-                    </div>
-                    <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
-                        </h5>
-                        <p class="card-text">${menu}</p>
-                        <p>${size}</p>
-                        <p>${type}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-77">
-                    <div class="card-header" style="background-color: darkgrey;">
-                    </div>
-                    <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
-                        </h5>
-                        <p class="card-text">${menu}</p>
-                        <p>${size}</p>
-                        <p>${type}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-77">
-                    <div class="card-header" style="background-color: darkgrey;">
-                    </div>
-                    <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
-                        </h5>
-                        <p class="card-text">${menu}</p>
-                        <p>${size}</p>
-                        <p>${type}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-77">
-                    <div class="card-header" style="background-color: darkgrey;">
-                    </div>
-                    <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
-                        </h5>
-                        <p class="card-text">${menu}</p>
-                        <p>${size}</p>
-                        <p>${type}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-77">
-                    <div class="card-header" style="background-color: darkgrey;">
-                    </div>
-                    <div class="card-body" style="background-color: darkgrey;">
-                        <h5 class="card-title">${name}
-                            <button type="button" id="order-delete-btn" class="btn-sm float-right"> X </button>
-                        </h5>
-                        <p class="card-text">${menu}</p>
-                        <p>${size}</p>
-                        <p>${type}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 </body>
