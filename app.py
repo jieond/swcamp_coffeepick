@@ -110,7 +110,7 @@ def order_get():
     order_list = list(db.orders.find({},{'_id':False}))
     return jsonify({'orders':order_list})
 
-#### 경록 주문 집계 GET ####
+
 
 @app.route('/order_count', methods=['GET'])
 def get_order_count():
