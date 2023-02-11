@@ -11,8 +11,12 @@ ca = certifi.where()
 
 # 내 mogoDB 정보 가져오기 - 패스워드, 클러스터 이름 커스텀
 # 2) tlsCAFile=ca 추가
+# shinyoung DB
 client = MongoClient('mongodb+srv://test:sparta@cluster0.cfgm0s9.mongodb.net/cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta
+# sunyoung DB
+# client = MongoClient('mongodb+srv://test:sparta@cluster0.20rbgfc.mongodb.net/Cluster0?retryWrites=true&w=majority')
+# db = client.dbsparta
 
 @app.route('/')
 def main():
@@ -48,19 +52,10 @@ def web_main_post():
 
         return jsonify({'msg': '주문서 생성 완료!','order_num':order_num})
 
-# @app.route("/main", methods=["GET"])
-# def web_main_get():
-#     return jsonify({'msg': 'GET 연결 완료!'})
 @app.route("/main_cafe_list", methods=["GET"])
 def web_main_cafe_list_get():
-    cafe_list = list(db.cafe_list.find({},{'_id':False}))
+    cafe_list = list(db.cafe_list.find({}, {'_id':False}))
     return jsonify({'cafe_list': cafe_list})
-
-# @app.route("/order", methods=["POST"])
-# def web_order_post():
-#     temp_order_num_receive = request.form['temp_order_num_give']
-#     order = db.orders.find_one({'order_num':temp_order_num_receive})
-#     return jsonify({'msg': temp_order_num_receive, 'order': order})
 
 @app.route("/main_order", methods=["GET"])
 def web_main_order_get():
@@ -75,6 +70,8 @@ def web_order_cafe_list_get():
 @app.route("/order", methods=["POST"])
 def web_order_post():
     num_receive = request.form['num_give']    # 주문번호_링크 맨 뒷자리
+    order_list = list(db.order.find({}, {'_id': False}))
+    count = len(order_list) + 1               # N번째 팀원 주문
     name_receive = request.form['name_give']  # 정선영
     menu_receive = request.form['menu_give']  # 아메리카노
     type_receive = request.form['type_give']  # ICE
@@ -82,22 +79,70 @@ def web_order_post():
 
     if name_receive == "" or menu_receive == "-- 골라보세요 --" or type_receive == "-- ICE/HOT --" or size_receive == "-- S/M/L --":
         return jsonify({'msg': '모든 값을 입력해주세요'})
+    else:
+        doc = {
+            'order_num': num_receive,
+            'num': count,
+            'user_name': name_receive,
+            'menu': menu_receive,
+            'ondo_type': type_receive,
+            'size': size_receive,
+            'done': 0
+        }
+        db.order.insert_one(doc)
 
-    doc = {
-        'order_num': num_receive,
-        'user_name' : name_receive,
-        'menu' : menu_receive,
-        'ondo_type' : type_receive,
-        'size' : size_receive
-    }
-    db.order.insert_one(doc)
+        existing_record = db.order_count.find_one({'order_num': num_receive, 'menu': menu_receive, 'size': size_receive, 'ondo_type': type_receive, 'done': 0})
 
-    return jsonify({'msg': 'coffee 주문 완료!'})
+        if existing_record is not None:
+            db.order_count.update_one({'_id': existing_record['_id']}, {'$inc': {'count': 1}})
+        else:
+            db.order_count.insert_one({'order_num': num_receive, 'menu': menu_receive, 'size': size_receive, 'ondo_type': type_receive, 'done': 0, 'count': 1})
+
+        return jsonify({'msg': 'coffee 주문 완료!'})
 
 @app.route("/order", methods=["GET"])
 def web_order_get():
     order_list = list(db.order.find({}, {'_id': False}))
     return jsonify({'orders': order_list})
+
+@app.route("/order", methods=["GET"])
+def order_get():
+    order_list = list(db.orders.find({},{'_id':False}))
+    return jsonify({'orders':order_list})
+
+#### 경록 주문 집계 GET ####
+
+@app.route('/order_count', methods=['GET'])
+def get_order_count():
+    order_counts = list(db['order_count'].find({},{'_id':False}))
+    return jsonify({"order_counts": order_counts})
+
+#### 경록 주문 삭제 ####
+
+@app.route("/order/done", methods=["POST"])
+def order_done():
+    num_receive = request.form['num_give']
+    db.order.update_one({'num': int(num_receive)}, {'$set': {'done': 1}})
+    return jsonify({'msg': '삭제 완료!'})
+
+# @app.route('/order', methods=['DELETE'])
+# def delete_item():
+#     order_collection = db["order"]
+#
+#     name = request.args.get("user_name")
+#     size = request.args.get("size")
+#     ondo_type = request.args.get("ondo_type")
+#     menu = request.args.get("menu")
+#
+#     order_collection.delete_one({
+#         "user_name": name,
+#         "size": size,
+#         "ondo_type": ondo_type,
+#         "menu": menu
+#     })
+#
+#     return jsonify({"result": "success"})
+
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)

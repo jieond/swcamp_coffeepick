@@ -6,95 +6,91 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <title>coffee를 퀵하게 pick, 커픽!</title>
-
     <style>
         * {
-            font-family: 'Gowun Batang', serif;
+            font-family: 'Gowun Dodum', serif;
             color: gray();
         }
-
-/*        body {
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.aitimes.com/news/photo/202010/132592_129694_3139.jpg');
-            background-position: center;
-            background-size: cover;
-        }*/
-
-         h3 {
+        /*body {*/
+        /*    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.aitimes.com/news/photo/202010/132592_129694_3139.jpg');*/
+        /*    background-position: center;*/
+        /*    background-size: cover;*/
+        /*}*/
+        h1 {
+            font-weight: 800;
+        }
+        h3 {
             font-weight: bold;
         }
-
-/*        h1 {
-            font-weight: bold;
-        }*/
-
         .order {
             width: 600px;
-            margin: 60px auto 0px auto;
+            margin: 40px auto 0px auto;
             padding-bottom: 60px;
         }
-
         .btn {
             width: 100%;
             max-width: 175px;
             margin: 5px auto 5px 315px;
         }
-
         .mybtn {
             width: 100%;
             max-width: 140px;
-            margin: 20px auto 10px 460px;
+            margin: 10px auto 80px 460px;
         }
-
         .order > table {
-            margin : 40px 0;
+            /*margin : 40px 0;*/
             font-size: 18px;
         }
-
-/*        option {
-            color: black;
-        }*/
-
+        /*option {*/
+        /*    color: black;*/
+        /*}*/
         .mytitle {
             width: 95%;
             max-width: 600px;
             margin: 20px auto 20px auto;
         }
-
         .mytitle2 {
+            display: flex;
+            justify-content: space-around;
             width: 95%;
             max-width: 600px;
             margin: 40px auto 20px auto;
         }
-
         .main-box {
             width: 95%;
             max-width: 600px;
             margin: auto auto 20px auto;
-
             box-shadow: 0px 0px 3px 0px gray;
             padding: 40px;
         }
-
+        option {
+            color: gray();
+        }
         .main-box > table {
             margin: 60px 0 5px 0;
             font-size: 28px;
         }
-
-        option {
-            color: gray();
+/*        .mycard {
+            margin: 20px auto 10px auto;
+            width: 95%;
+            max-width: 600px;*/
         }
-
+        .mypost {
+            width: 95%;
+            max-width: 600px;
+            margin: 20px auto 0px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+            background-color: white;
+        }
     </style>
     <script>
         // let temp_url = window.location.href
@@ -107,8 +103,6 @@
         });
 
         function show_main() {
-
-            // let user_order_num = {{order_num}}
 
             $.ajax({
                 type: 'GET',
@@ -124,17 +118,17 @@
                         let due = rows[i]['due']
                         let cafe_name = rows[i]['cafe_name']
                         console.log(order_name, due, cafe_name)
-                        let temp_html = `<h2><td>주문서 이름: ${order_name}</td></h2>
-                                      <h1><td>마감시간: ${due}</td></h1>
-
-                                      <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>${cafe_name}</th><th><h5> 메뉴를 pick! 해주세요 :)</h5></th>
-                                            </tr>
-                                            </thead>
-                                       </table>
-                                   </div>`
+                        let temp_html = `<h2><td>${order_name}</td></h2>
+                                           <p></p>
+                                          <h3><td>${due} 까지 주문해주세요</td></h3>
+                                          <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>${cafe_name}</th><th><h5> 메뉴를 pick! 해주세요 :)</h5></th>
+                                                </tr>
+                                                </thead>
+                                           </table>
+                                       </div>`
 
                         if (rows[i]['order_num'] == user_order_num) {
                            $('#main-box').append(temp_html)
@@ -154,8 +148,6 @@
 
         function show_main_cafe_name() {
 
-            // let user_order_num = {{order_num}}
-
             $.ajax({
                 type: 'GET',
                 url: '/main_order',
@@ -170,37 +162,6 @@
                             user_cafe_name = rows[i]["cafe_name"]
                             // console.log(user_cafe_name)
                         }
-                    }
-                }
-            });
-        }
-
-        $(document).ready(function () {
-            show_order();
-        });
-        function show_order() {
-            $.ajax({
-                type: 'GET',
-                url: '/order',
-                data: {},
-                success: function (response) {
-                    let rows = response['orders']
-                    for (let i = 0; i < rows.length; i++) {
-                        let name = rows[i]['user_name']
-                        let menu = rows[i]['menu']
-                        let type = rows[i]['ondo_type']
-                        let size = rows[i]['size']
-
-                        if (rows[i]['order_num'] == user_order_num){
-                        let temp_html = `<tr>
-                                            <td>${name}</td>
-                                            <td>${menu}</td>
-                                            <td>${type}</td>
-                                            <td>${size}</td>
-                                          </tr>`
-                        $('#order-box').append(temp_html)
-                        }
-
                     }
                 }
             });
@@ -270,64 +231,178 @@
             document.body.removeChild(textarea);
             alert("URL이 복사되었습니다.")
         }
+
+        <!--    경록_주문 집계 결과 가져오기 -->
+        $(document).ready(function () {
+            show_order_count();
+        });
+
+        function show_order_count() {
+            $.ajax({
+                type: 'GET',
+                url: '/order_count',
+                data: {},
+                success: function (response) {
+                    let rows = response['order_counts']
+                    //$('#total_count_box').empty();
+                    //$('#order_count_box').empty();
+
+                    let total_no_order_count = 0;
+                    for (let i = 0; i < rows.length; i++) {
+
+                        if (rows[i]['order_num'] == user_order_num) {
+
+                            let ordercount_menu = rows[i]['menu']
+                            let ordercount_size = rows[i]['size']
+                            let ordercount_ondotype = rows[i]['ondo_type']
+                            let ordercount_count = rows[i]['count']
+
+                            total_no_order_count += ordercount_count;
+
+                            let temp_html_total_no_count = `<div id="total_count_box" class="card-header"
+                                                               style="width: 150%; max-width: 600px; padding: 10px;">총 ${total_no_order_count} 잔
+                                                            </div>`
+
+
+                            $('#total_count_box').html(temp_html_total_no_count)
+
+                            let temp_html_order_count = `<table class="col">
+                                                            <div class="card">
+                                                                <ul class="list-group list-group-flush">
+                                                                    <li class="list-group-item">${ordercount_menu} ${ordercount_ondotype} ${ordercount_size} ${ordercount_count}잔</li>
+                                                                </ul>
+                                                            </div>
+                                                          </table>`
+
+                            $('#order_count_box').append(temp_html_order_count);
+                        }
+                    }
+                }
+            });
+        }
+
+
+        <!--    경록_취합 주문 보여주기 -->
+
+        $(document).ready(function () {
+            show_order();
+        });
+
+        function show_order() {
+            $.ajax({
+                type: 'GET',
+                url: '/order',
+                data: {},
+                success: function (response) {
+                    let rows = response['orders']
+                    $('#order_box').empty();
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['user_name']
+                        let menu = rows[i]['menu']
+                        let type = rows[i]['ondo_type']
+                        let size = rows[i]['size']
+                        let num = rows[i]['num']
+                        let done = rows[i]['done']
+
+                        if (rows[i]['order_num'] == user_order_num) {
+                            let temp_html2 = `<div class="col">
+                                                <div class="card border-dark mb-3" style= "max-width: 18rem;">
+                                                  <div class="card-header">${name}
+                                                  <button type="button" id="order-delete-btn" class="btn-sm float-right" onclick="done_order(${num})"> X </button>
+                                                  </div>
+\t
+                                                  <div class="card-body">
+                                                    <h5 class="card-title">${menu}</h5>
+                                                    <p class="card-text"> ${size}</p>
+                                                    <p class="card-text"> ${type}</p>
+                                                  </div>
+                                                </div>`
+
+
+                            if (done == 0) {
+                                $('#order_box').append(temp_html2)
+                            }
+                            }
+                        }
+                    }
+                })
+            };
+
+
+        <!--    경록_주문 삭제 기능 -->
+        function done_order(num){
+            if (confirm("주문을 삭제하시겠습니까?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/order/done",
+                    data: {num_give: num},
+                    success: function (response) {
+                        alert(response["msg"])
+                        window.location.reload()
+                    }
+                });
+            }
+        }
+
+        // function deleteItem() {
+        //     if (confirm("주문을 삭제하시겠습니까?")) {
+        //         $.ajax({
+        //             url: "/order",
+        //             type: "DELETE",
+        //             data: {
+        //                 "user_name": name,
+        //                 "size": size,
+        //                 "ondo_type": ondo_type,
+        //                 "menu": menu
+        //             },
+        //             success: function (result) {
+        //                 window.location.reload()
+        //                 alert(result["result"]);
+        //             }
+        //             // error: function (xhr, status, error) {
+        //             //     alert("에러가 발생했습니다!");
+        //             // }
+        //         });
+        //     }
+        // }
+
+
+
     </script>
 </head>
 <body>
-<!--정서-->
-
-<!--    <div class="mytitle">
-        <h3> 팀원 커피 주문,<br/>스트레스 없이 퀵(Quick)하게 픽(Pick)하자!</h3>
-    </div>-->
+<!--    <div class="mytitle">-->
+<!--        <h2> 커피 주문,<br/>스트레스 없이 퀵(Quick)하게 픽(Pick)하자!</h2>-->
+<!--    </div>-->
     <div class="mytitle2">
-        <h1>coffick</h1>
+        <a href="http://coffee-pick.site/" style="color:black; text-decoration:none"><h1>coffick</h1></a>
+            <tbody id="order-link">
+            <button onclick="clip(); return false;" type="button" class="btn btn btn-dark" >주문서 링크복사</button>
+            </tbody>
     </div>
 
-<div class="btn">
-        <tbody id="order-link">
-        <button onclick="clip(); return false;" type="button" class="btn btn btn-outline-dark">주문서 링크복사</button>
-        </tbody>
-    </div>
 
     <div id="main-box" class="main-box">
-<!--        <h2><td>주문서 이름: 5G조</td></h2>
-        <h1><td>마감시간: 10시30분</td></h1>
-
-        <table class="table">
-            <thead>
-            <tr>
-                <th>카페이름</th><th><h5> 메뉴를 pick! 해주세요 :)</h5></th>
-            </tr>
-            </thead>
-        </table>-->
-    </div>
     </div>
 
 <!--    선영-->
     <div class="mask"></div>
     <div class="order">
-<!--        <h1>coffick</h1>-->
-<!--        <h3>coffee 주문을 퀵하게 pick, 커픽!</h3>-->
-<!--        <p>-->
-<!--            한번 만든 주문서는 수정할 수 없어요!<br/>-->
-<!--            잘못 만들었다면 새로 만들어 팀원에게 공유해주세요 :)-->
-<!--        </p>-->
         <div class="order-info">
             <div class="input-group mb-3">
-                <span class="input-group-text">이름</span>
+                <span class="input-group-text">주문자명</span>
                 <input id="name" type="text" class="form-control">
             </div>
             <div class="input-group mb-3">
-                <label class="input-group-text" for="menu">메뉴</label>
+                <label class="input-group-text" for="menu">메뉴선택</label>
                 <select onclick="show_menus()" class="form-select" id="menu">
                   <option selected>-- 골라보세요 --</option>
-<!--                  <option value="아메리카노">아메리카노</option>-->
-<!--                  <option value="딸기라떼">딸기라떼</option>-->
-<!--                  <option value="그린티">그린티</option>-->
+
                 </select>
               </div>
             <div class="input-group mb-3">
-                <label class="input-group-text" for="type">타입</label>
-                <select class="form-select" id="type">
+                <label class="input-group-text" for="type">타입선택</label>
+                <select class="form-select" id="type" >
                   <option selected>-- ICE/HOT --</option>
                   <option value="ICE">ICE</option>
                   <option value="HOT">HOT</option>
@@ -344,24 +419,20 @@
               </div>
               <button onclick="save_order()" type="button" class="mybtn btn btn-success btn-lg">주문하기</button>
         </div>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">이름</th>
-                <th scope="col">메뉴</th>
-                <th scope="col">타입</th>
-                <th scope="col">사이즈</th>
-              </tr>
-            </thead>
-            <tbody id="order-box">
-<!--              <tr>-->
-<!--                <td>홍길동</td>-->
-<!--                <td>서울시 용산구</td>-->
-<!--                <td>20평</td>-->
-<!--                <td>20평</td> -->
-<!--              </tr>-->
-            </tbody>
-          </table>
-    </div>
+
+        <!--    경록 주문 집계 -->
+        <div id="total_count_box"
+             style="width: 500px; color: black;">
+        </div>
+
+         <table id="order_count_box" class="table"
+             style="width: 100%; color: gray();">
+         </table>
+
+        <!--    경록 주문 정보-->
+        <div id="order_box", class="row row-cols-1 row-cols-md-2 g-2" style="margin: 20px auto auto auto;">
+        </div>
+
+
 </body>
 </html>

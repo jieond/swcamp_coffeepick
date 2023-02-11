@@ -5,15 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-    <title>커피 주문, CoffeePick으로 퀵하게 Pick!</title>
+
+    <link rel="icon" type="image/x-icon" href="http://www.coffee-pick.site/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="http://www.coffee-pick.site/favicon.ico">
+
+
+    <title>커피 주문, coffick으로 퀵하게 Pick!</title>
 
     <style>
         * {
@@ -131,32 +136,34 @@
 <!--<div class="mask"></div>-->
 <div class="mytitle">
     <div class="titletext">
-    <h1>Coffee - Pick!</h1>
-    <h3>커피 주문, 스트레스 없이 똑똑하게 Pick!</h3>
-    <p>
-        한번 만든 주문서는 수정할 수 없어요!<br/>
-        잘못 만들었다면 새로 만들어 팀원에게 공유 해주세요 :)
+    <h1>coffick? 커픽!</h1>
+    <h3>커피 단체 주문, 스트레스 없이 똑똑하게 픽!</h3>
+    <p> ☝ 주문정보 만들기</br>
+        ✌ 링크 공유하기 </br>
+        👌 메뉴 취합 완료!
     </p>
+    <p style="font-size:80%">단, 한번 만든 주문정보는 수정할 수 없어요! </br>
+        잘못 만들었다면 새로 만들어 팀원에게 공유 해주세요 :)</p>
 </div>
 </div>
 <div class="order">
     <div class="order-info">
         <div class="input-group mb-3">
-            <span class="input-group-text">주문서명</span>
-            <input id="order_name" type="text" class="form-control">
+            <span class="input-group-text">주문하는 사람</span>
+            <input id="order_name" type="text" class="form-control" placeholder="00팀 000">
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text">마감시간</span>
-            <input id="due" type="text" class="form-control">
+            <span class="input-group-text">주문 예정 시간</span>
+            <input id="due" type="text" class="form-control" placeholder="00:00">
         </div>
         <div class="input-group mb-3">
-            <label class="input-group-text" for="cafe_list">카페선택</label>
+            <label class="input-group-text" for="cafe_list">주문할 카페</label>
             <select class="form-select" id="cafe_list">
                 <option selected>-- 매장 선택 --</option>
 <!--                <option value="준비중">다른 카페는 얼른 준비해서 올게요 🙏</option>-->
             </select>
         </div>
-        <button onclick="save_order()" type="button" class="btn btn-warning mybtn">주문서 만들기</button>
+        <button onclick="save_order()" type="button" class="btn btn-success mybtn">함께주문 시작하기</button>
     </div>
 </div>
 </body>
